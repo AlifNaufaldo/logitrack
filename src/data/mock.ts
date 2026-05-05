@@ -58,6 +58,8 @@ export interface ColdRoom {
   minTemp: number;
   maxTemp: number;
   currentTemp: number;
+  humidity: number;      // % RH
+  dewPoint: number;      // °C
   capacity: number;
   usedCapacity: number;
   status: 'normal' | 'warning' | 'danger' | 'offline';
@@ -187,11 +189,11 @@ export const assignments: Assignment[] = [
 // --- NEW Warehouse Mock Data ---
 
 export const coldRooms: ColdRoom[] = [
-  { id: 'CR-001', warehouseId: 'WH-001', name: 'Cold Room A', minTemp: 2, maxTemp: 8, currentTemp: 4.5, capacity: 500, usedCapacity: 320, status: 'normal' },
-  { id: 'CR-002', warehouseId: 'WH-001', name: 'Cold Room B', minTemp: -18, maxTemp: -12, currentTemp: -15.2, capacity: 300, usedCapacity: 150, status: 'normal' },
-  { id: 'CR-003', warehouseId: 'WH-001', name: 'Cold Room C', minTemp: 0, maxTemp: 5, currentTemp: 7.8, capacity: 400, usedCapacity: 380, status: 'warning' },
-  { id: 'CR-004', warehouseId: 'WH-002', name: 'Cold Room Alpha', minTemp: 2, maxTemp: 8, currentTemp: 4.2, capacity: 600, usedCapacity: 400, status: 'normal' },
-  { id: 'CR-005', warehouseId: 'WH-002', name: 'Cold Room Beta', minTemp: -20, maxTemp: -15, currentTemp: -10.5, capacity: 400, usedCapacity: 200, status: 'danger' },
+  { id: 'CR-001', warehouseId: 'WH-001', name: 'Cold Room A', minTemp: 2, maxTemp: 8, currentTemp: 4.5, humidity: 85, dewPoint: 2.1, capacity: 500, usedCapacity: 320, status: 'normal' },
+  { id: 'CR-002', warehouseId: 'WH-001', name: 'Cold Room B', minTemp: -18, maxTemp: -12, currentTemp: -15.2, humidity: 45, dewPoint: -22.8, capacity: 300, usedCapacity: 150, status: 'normal' },
+  { id: 'CR-003', warehouseId: 'WH-001', name: 'Cold Room C', minTemp: 0, maxTemp: 5, currentTemp: 7.8, humidity: 92, dewPoint: 6.5, capacity: 400, usedCapacity: 380, status: 'warning' },
+  { id: 'CR-004', warehouseId: 'WH-002', name: 'Cold Room Alpha', minTemp: 2, maxTemp: 8, currentTemp: 4.2, humidity: 80, dewPoint: 1.3, capacity: 600, usedCapacity: 400, status: 'normal' },
+  { id: 'CR-005', warehouseId: 'WH-002', name: 'Cold Room Beta', minTemp: -20, maxTemp: -15, currentTemp: -10.5, humidity: 38, dewPoint: -25.1, capacity: 400, usedCapacity: 200, status: 'danger' },
 ];
 
 export const tempLogs: TempLog[] = [
