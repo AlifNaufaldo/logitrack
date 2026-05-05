@@ -22,7 +22,7 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
       <header className={s.topbar}>
         <div className={s.topbarLeft}>
           <div className={s.topbarLogo}><Truck size={18} /></div>
-          <span className={s.topbarBrand}>LogiTrack</span>
+          <span className={s.topbarBrand}>Driver</span>
         </div>
         <div className={s.topbarRight}>
           <button className={s.topNotif} aria-label="Notifikasi">

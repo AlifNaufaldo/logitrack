@@ -49,6 +49,65 @@ export interface Document {
   url: string; uploadedAt: string; status: 'pending' | 'verified';
 }
 
+// --- NEW Warehouse Specific Interfaces ---
+
+export interface ColdRoom {
+  id: string;
+  warehouseId: string;
+  name: string;
+  minTemp: number;
+  maxTemp: number;
+  currentTemp: number;
+  capacity: number;
+  usedCapacity: number;
+  status: 'normal' | 'warning' | 'danger' | 'offline';
+}
+
+export interface TempLog {
+  id: string;
+  coldRoomId: string;
+  temp: number;
+  timestamp: string;
+}
+
+export interface StockMovement {
+  id: string;
+  warehouseId: string;
+  type: 'in' | 'out';
+  itemId: string;
+  quantity: number;
+  assignmentId: string | null;
+  fromRoom: string | null;
+  toRoom: string | null;
+  handledBy: string;
+  timestamp: string;
+  note: string;
+}
+
+export interface RoomTransfer {
+  id: string;
+  warehouseId: string;
+  itemId: string;
+  quantity: number;
+  fromRoomId: string;
+  toRoomId: string;
+  reason: string;
+  initiatedBy: string;
+  timestamp: string;
+  status: 'pending' | 'completed';
+}
+
+export interface CCTVCamera {
+  id: string;
+  warehouseId: string;
+  name: string;
+  embedUrl: string;
+  isOnline: boolean;
+  location: string;
+}
+
+// --- Data ---
+
 export const drivers: Driver[] = [
   { id: 'DRV-001', name: 'Lionel Messi', phone: '081234567801', simNumber: 'SIM-A-12345', simExpiry: '2027-06-15', status: 'on_trip', currentLocation: { lat: -6.3065, lng: 107.2862 }, assignedTruck: 'TRK-001', avatar: '/avatars/1.jpg' },
   { id: 'DRV-002', name: 'Cristiano Ronaldo', phone: '081234567802', simNumber: 'SIM-B2-23456', simExpiry: '2026-11-20', status: 'on_trip', currentLocation: { lat: -6.1751, lng: 106.8650 }, assignedTruck: 'TRK-003', avatar: '/avatars/2.jpg' },
@@ -73,16 +132,6 @@ export const trucks: Truck[] = [
   { id: 'TRK-008', plateNumber: 'B 8901 QR', type: 'Tronton', capacityTon: 15, dimensions: { length: 900, width: 240, height: 220 }, status: 'in_use' },
   { id: 'TRK-009', plateNumber: 'B 9012 ST', type: 'Engkel', capacityTon: 3, dimensions: { length: 420, width: 180, height: 170 }, status: 'available' },
   { id: 'TRK-010', plateNumber: 'B 0123 UV', type: 'Wingbox', capacityTon: 10, dimensions: { length: 750, width: 240, height: 240 }, status: 'in_use' },
-  { id: 'TRK-011', plateNumber: 'B 1122 WX', type: 'Fuso', capacityTon: 8, dimensions: { length: 680, width: 230, height: 200 }, status: 'available' },
-  { id: 'TRK-012', plateNumber: 'B 2233 YZ', type: 'CDD', capacityTon: 5, dimensions: { length: 560, width: 210, height: 190 }, status: 'available' },
-  { id: 'TRK-013', plateNumber: 'B 3344 AB', type: 'Tronton', capacityTon: 15, dimensions: { length: 900, width: 240, height: 220 }, status: 'maintenance' },
-  { id: 'TRK-014', plateNumber: 'B 4455 CD', type: 'Engkel', capacityTon: 3, dimensions: { length: 420, width: 180, height: 170 }, status: 'available' },
-  { id: 'TRK-015', plateNumber: 'B 5566 EF', type: 'Wingbox', capacityTon: 10, dimensions: { length: 750, width: 240, height: 240 }, status: 'available' },
-  { id: 'TRK-016', plateNumber: 'B 6677 GH', type: 'Fuso', capacityTon: 8, dimensions: { length: 680, width: 230, height: 200 }, status: 'available' },
-  { id: 'TRK-017', plateNumber: 'B 7788 IJ', type: 'CDD', capacityTon: 5, dimensions: { length: 560, width: 210, height: 190 }, status: 'available' },
-  { id: 'TRK-018', plateNumber: 'B 8899 KL', type: 'Tronton', capacityTon: 15, dimensions: { length: 900, width: 240, height: 220 }, status: 'available' },
-  { id: 'TRK-019', plateNumber: 'B 9900 MN', type: 'Engkel', capacityTon: 3, dimensions: { length: 420, width: 180, height: 170 }, status: 'available' },
-  { id: 'TRK-020', plateNumber: 'B 1010 OP', type: 'Wingbox', capacityTon: 10, dimensions: { length: 750, width: 240, height: 240 }, status: 'available' },
 ];
 
 export const warehouses: Warehouse[] = [
@@ -133,50 +182,71 @@ export const assignments: Assignment[] = [
     items: [{ itemId: 'ITM-002', quantity: 15 }, { itemId: 'ITM-003', quantity: 10 }, { itemId: 'ITM-006', quantity: 80 }],
     status: 'in_progress', createdAt: '2026-04-28T06:30:00',
   },
-  {
-    id: 'ASG-003', driverId: 'DRV-004', truckId: 'TRK-005',
-    route: [
-      { warehouseId: 'WH-006', order: 1, estimatedArrival: '2026-04-28T06:30:00', actualArrival: '2026-04-28T06:30:00', status: 'arrived' },
-      { warehouseId: 'WH-002', order: 2, estimatedArrival: '2026-04-28T08:00:00', actualArrival: '2026-04-28T08:12:00', status: 'arrived' },
-      { warehouseId: 'WH-003', order: 3, estimatedArrival: '2026-04-28T08:45:00', actualArrival: null, status: 'en_route' },
-    ],
-    items: [{ itemId: 'ITM-005', quantity: 200 }, { itemId: 'ITM-010', quantity: 150 }],
-    status: 'in_progress', createdAt: '2026-04-28T05:30:00',
-  },
-  {
-    id: 'ASG-004', driverId: 'DRV-007', truckId: 'TRK-008',
-    route: [
-      { warehouseId: 'WH-001', order: 1, estimatedArrival: '2026-04-28T07:00:00', actualArrival: '2026-04-28T07:00:00', status: 'arrived' },
-      { warehouseId: 'WH-004', order: 2, estimatedArrival: '2026-04-28T08:00:00', actualArrival: null, status: 'en_route' },
-      { warehouseId: 'WH-005', order: 3, estimatedArrival: '2026-04-28T10:00:00', actualArrival: null, status: 'pending' },
-      { warehouseId: 'WH-009', order: 4, estimatedArrival: '2026-04-28T12:00:00', actualArrival: null, status: 'pending' },
-    ],
-    items: [{ itemId: 'ITM-007', quantity: 40 }, { itemId: 'ITM-008', quantity: 30 }],
-    status: 'in_progress', createdAt: '2026-04-28T06:00:00',
-  },
-  {
-    id: 'ASG-005', driverId: 'DRV-009', truckId: 'TRK-010',
-    route: [
-      { warehouseId: 'WH-005', order: 1, estimatedArrival: '2026-04-28T08:00:00', actualArrival: '2026-04-28T08:02:00', status: 'arrived' },
-      { warehouseId: 'WH-002', order: 2, estimatedArrival: '2026-04-28T09:30:00', actualArrival: null, status: 'en_route' },
-    ],
-    items: [{ itemId: 'ITM-001', quantity: 30 }, { itemId: 'ITM-002', quantity: 10 }],
-    status: 'in_progress', createdAt: '2026-04-28T07:00:00',
-  },
+];
+
+// --- NEW Warehouse Mock Data ---
+
+export const coldRooms: ColdRoom[] = [
+  { id: 'CR-001', warehouseId: 'WH-001', name: 'Cold Room A', minTemp: 2, maxTemp: 8, currentTemp: 4.5, capacity: 500, usedCapacity: 320, status: 'normal' },
+  { id: 'CR-002', warehouseId: 'WH-001', name: 'Cold Room B', minTemp: -18, maxTemp: -12, currentTemp: -15.2, capacity: 300, usedCapacity: 150, status: 'normal' },
+  { id: 'CR-003', warehouseId: 'WH-001', name: 'Cold Room C', minTemp: 0, maxTemp: 5, currentTemp: 7.8, capacity: 400, usedCapacity: 380, status: 'warning' },
+  { id: 'CR-004', warehouseId: 'WH-002', name: 'Cold Room Alpha', minTemp: 2, maxTemp: 8, currentTemp: 4.2, capacity: 600, usedCapacity: 400, status: 'normal' },
+  { id: 'CR-005', warehouseId: 'WH-002', name: 'Cold Room Beta', minTemp: -20, maxTemp: -15, currentTemp: -10.5, capacity: 400, usedCapacity: 200, status: 'danger' },
+];
+
+export const tempLogs: TempLog[] = [
+  { id: 'TL-001', coldRoomId: 'CR-001', temp: 4.2, timestamp: '2026-05-05T08:00:00' },
+  { id: 'TL-002', coldRoomId: 'CR-001', temp: 4.5, timestamp: '2026-05-05T09:00:00' },
+  { id: 'TL-003', coldRoomId: 'CR-001', temp: 4.8, timestamp: '2026-05-05T10:00:00' },
+  { id: 'TL-004', coldRoomId: 'CR-001', temp: 4.5, timestamp: '2026-05-05T11:00:00' },
+  { id: 'TL-005', coldRoomId: 'CR-001', temp: 4.3, timestamp: '2026-05-05T12:00:00' },
+  { id: 'TL-006', coldRoomId: 'CR-001', temp: 4.5, timestamp: '2026-05-05T13:00:00' },
+];
+
+export const stockMovements: StockMovement[] = [
+  { id: 'SM-001', warehouseId: 'WH-001', type: 'in', itemId: 'ITM-001', quantity: 50, assignmentId: 'ASG-001', fromRoom: null, toRoom: 'CR-001', handledBy: 'WH-USER-1', timestamp: '2026-05-05T08:30:00', note: 'Barang masuk dari Truk ASG-001' },
+  { id: 'SM-002', warehouseId: 'WH-001', type: 'out', itemId: 'ITM-004', quantity: 20, assignmentId: null, fromRoom: 'CR-003', toRoom: null, handledBy: 'WH-USER-1', timestamp: '2026-05-05T10:15:00', note: 'Pengiriman retail' },
+  { id: 'SM-003', warehouseId: 'WH-001', type: 'in', itemId: 'ITM-005', quantity: 100, assignmentId: 'ASG-003', fromRoom: null, toRoom: 'CR-002', handledBy: 'WH-USER-1', timestamp: '2026-05-05T11:45:00', note: 'Stok baru' },
+];
+
+export const roomTransfers: RoomTransfer[] = [
+  { id: 'RT-001', warehouseId: 'WH-001', itemId: 'ITM-001', quantity: 10, fromRoomId: 'CR-001', toRoomId: 'CR-003', reason: 'Penyesuaian kapasitas Cold Room A penuh', initiatedBy: 'WH-USER-1', timestamp: '2026-05-05T09:20:00', status: 'completed' },
+  { id: 'RT-002', warehouseId: 'WH-001', itemId: 'ITM-004', quantity: 30, fromRoomId: 'CR-003', toRoomId: 'CR-001', reason: 'Rotasi stok FIFO', initiatedBy: 'WH-USER-1', timestamp: '2026-05-05T10:05:00', status: 'completed' },
+  { id: 'RT-003', warehouseId: 'WH-001', itemId: 'ITM-005', quantity: 50, fromRoomId: 'CR-002', toRoomId: 'CR-003', reason: 'Maintenance Cold Room B', initiatedBy: 'WH-USER-1', timestamp: '2026-05-05T11:30:00', status: 'completed' },
+  { id: 'RT-004', warehouseId: 'WH-001', itemId: 'ITM-002', quantity: 5, fromRoomId: 'CR-001', toRoomId: 'CR-002', reason: 'Produk butuh suhu lebih rendah', initiatedBy: 'WH-USER-1', timestamp: '2026-05-05T13:15:00', status: 'pending' },
+  { id: 'RT-005', warehouseId: 'WH-001', itemId: 'ITM-003', quantity: 8, fromRoomId: 'CR-003', toRoomId: 'CR-002', reason: 'Konsolidasi barang frozen', initiatedBy: 'WH-USER-1', timestamp: '2026-05-05T14:00:00', status: 'pending' },
+];
+
+// Staff lookup for warehouse users
+export interface WarehouseStaffMember {
+  name: string;
+  role: string;
+  status: 'active' | 'idle' | 'break';
+  currentTask: string;
+  avatar: string; // initials
+}
+
+export const warehouseStaff: Record<string, WarehouseStaffMember> = {
+  'WH-USER-1': { name: 'Budi Santoso', role: 'Kepala Gudang', status: 'active', currentTask: 'Memindahkan Mesin Cuci ke Cold Room B', avatar: 'BS' },
+  'WH-USER-2': { name: 'Rina Wati', role: 'Staff Inventori', status: 'active', currentTask: 'Mencatat barang masuk dari ASG-001', avatar: 'RW' },
+  'WH-USER-3': { name: 'Dedi Kurniawan', role: 'Operator Cold Storage', status: 'idle', currentTask: 'Standby — monitoring suhu', avatar: 'DK' },
+  'WH-USER-4': { name: 'Siti Aminah', role: 'QC Inspector', status: 'break', currentTask: 'Istirahat makan siang', avatar: 'SA' },
+  'WH-USER-5': { name: 'Agung Prasetyo', role: 'Forklift Operator', status: 'active', currentTask: 'Memuat 50 karton ke Packing Area', avatar: 'AP' },
+};
+
+export const cctvCameras: CCTVCamera[] = [
+  { id: 'CAM-001', warehouseId: 'WH-001', name: 'Pintu Utama', embedUrl: 'https://cctv.balitower.co.id/Bendungan-Hilir-003-700014_3/embed.html', isOnline: true, location: 'Eksterior Depan' },
+  { id: 'CAM-002', warehouseId: 'WH-001', name: 'Area Loading Dock', embedUrl: '', isOnline: true, location: 'Sisi Barat' },
+  { id: 'CAM-003', warehouseId: 'WH-001', name: 'Lorong Cold Storage', embedUrl: '', isOnline: true, location: 'Interior Blok A' },
+  { id: 'CAM-004', warehouseId: 'WH-001', name: 'Gudang Kering', embedUrl: '', isOnline: false, location: 'Interior Blok C' },
 ];
 
 export const attendances: Attendance[] = [
   { id: 'ATT-001', driverId: 'DRV-001', type: 'in', timestamp: '2026-04-28T06:30:00', location: { lat: -6.3065, lng: 107.2862 }, address: 'Gudang Karawang, Jl. Industri Raya', selfieUrl: '/selfies/drv001-in.jpg' },
-  { id: 'ATT-002', driverId: 'DRV-002', type: 'in', timestamp: '2026-04-28T06:45:00', location: { lat: -6.1037, lng: 106.8712 }, address: 'Gudang Tanjung Priok, Jl. Pelabuhan', selfieUrl: '/selfies/drv002-in.jpg' },
-  { id: 'ATT-003', driverId: 'DRV-004', type: 'in', timestamp: '2026-04-28T06:00:00', location: { lat: -6.2297, lng: 106.6894 }, address: 'Gudang Tangerang, Jl. MH Thamrin', selfieUrl: '/selfies/drv004-in.jpg' },
 ];
 
 export const driverDocuments: Document[] = [
   { id: 'DOC-001', driverId: 'DRV-001', type: 'SIM', name: 'SIM A - Agus Pratama', url: '/docs/sim-agus.pdf', uploadedAt: '2026-01-15', status: 'verified' },
-  { id: 'DOC-002', driverId: 'DRV-001', type: 'Surat Kesehatan', name: 'Surat Keterangan Sehat', url: '/docs/health-agus.pdf', uploadedAt: '2026-03-20', status: 'verified' },
-  { id: 'DOC-003', driverId: 'DRV-001', type: 'Surat Jalan', name: 'SJ-2026-04-28-001', url: '/docs/sj-001.pdf', uploadedAt: '2026-04-28', status: 'pending' },
-  { id: 'DOC-004', driverId: 'DRV-002', type: 'SIM', name: 'SIM B2 - Budi Santoso', url: '/docs/sim-budi.pdf', uploadedAt: '2026-02-10', status: 'verified' },
-  { id: 'DOC-005', driverId: 'DRV-002', type: 'Surat Jalan', name: 'SJ-2026-04-28-002', url: '/docs/sj-002.pdf', uploadedAt: '2026-04-28', status: 'verified' },
 ];
 
 // Helper to get related data

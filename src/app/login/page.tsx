@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Truck, User, Lock, AlertCircle, MapPin, Package, BarChart3 } from 'lucide-react';
+import { Truck, User, Lock, AlertCircle, MapPin, Package, BarChart3, Warehouse } from 'lucide-react';
 import s from './login.module.css';
 
 export default function LoginPage() {
@@ -88,6 +88,9 @@ export default function LoginPage() {
             </button>
             <button type="button" className={s.demoBtn} onClick={() => fillDemo('agus', 'driver123')}>
               <Truck size={16} /> Login sebagai Sopir (Agus)
+            </button>
+            <button type="button" className={s.demoBtn} onClick={() => fillDemo('gudang1', 'warehouse123')}>
+              <Warehouse size={16} /> Login sebagai Admin Warehouse
             </button>
           </div>
         </form>
