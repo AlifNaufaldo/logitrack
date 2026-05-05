@@ -1,12 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
   Warehouse, LayoutDashboard, Box, Thermometer,
   ArrowLeftRight, Video, Bell, LogOut, User, Menu,
-  Package, Truck, Ship, Map
+  Map
 } from 'lucide-react';
 import { ToastProvider } from './components/ToastProvider';
 import { getWarehouse } from '@/data/mock';
@@ -31,11 +31,6 @@ export default function WarehouseLayout({ children }: { children: React.ReactNod
 
   const warehouse = user?.warehouseId ? getWarehouse(user.warehouseId) : null;
 
-  // Auto-close sidebar on mobile when navigating
-  useEffect(() => {
-    setIsSidebarOpen(false);
-  }, [pathname]);
-
   return (
     <ToastProvider>
       <div className={s.warehouseLayout}>
@@ -56,7 +51,7 @@ export default function WarehouseLayout({ children }: { children: React.ReactNod
               const Icon = item.icon;
               const active = pathname === item.href;
               return (
-                <Link key={item.href + i} href={item.href} className={`${s.navLink} ${active ? s.active : ''}`}>
+                <Link key={item.href + i} href={item.href} className={`${s.navLink} ${active ? s.active : ''}`} onClick={() => setIsSidebarOpen(false)}>
                   <Icon size={18} className={s.navIcon} />
                   <span>{item.label}</span>
                 </Link>

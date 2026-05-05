@@ -1,7 +1,7 @@
 'use client';
 import { useAuth } from '@/context/AuthContext';
 import { coldRooms, getWarehouse } from '@/data/mock';
-import { Thermometer, Droplets, Wind, TrendingUp, History, Info } from 'lucide-react';
+import { Thermometer, Droplets, Wind, TrendingUp, Info } from 'lucide-react';
 import s from '../warehouse.module.css';
 
 export default function WarehouseColdStorage() {
@@ -18,7 +18,7 @@ export default function WarehouseColdStorage() {
   const roomC = rooms[2];
 
   // Helper to render a room badge inside SVG — minimal: just name + temp + status dot
-  const RoomBadge = ({ room, x, y, w }: { room: typeof rooms[0] | undefined; x: number; y: number; w: number }) => {
+  const renderRoomBadge = (room: typeof rooms[0] | undefined, x: number, y: number, w: number) => {
     if (!room) return null;
     const color = getColor(room.status);
     return (
@@ -79,7 +79,7 @@ export default function WarehouseColdStorage() {
             <rect x="410" y="210" width="25" height="110" fill="#E2E8F0" stroke="#CBD5E1" rx="3" />
 
             {/* Room B badge */}
-            <RoomBadge room={roomB} x={80} y={320} w={180} />
+            {renderRoomBadge(roomB, 80, 320, 180)}
 
             {/* ── RIGHT: Room A ── */}
             {/* Entrance top */}
@@ -103,7 +103,7 @@ export default function WarehouseColdStorage() {
             <text x="720" y="180" textAnchor="middle" fontSize="11" fontWeight="600" fill="#CBD5E1">AISLE</text>
 
             {/* Room A badge */}
-            <RoomBadge room={roomA} x={560} y={320} w={180} />
+            {renderRoomBadge(roomA, 560, 320, 180)}
 
             {/* ── BOTTOM ZONES ── */}
             <rect x="470" y="368" width="60" height="24" fill="#38BDF8" rx="4" />

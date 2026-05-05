@@ -1,9 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Truck, LayoutDashboard, UserCheck, Upload, Package, BoxIcon, Warehouse, Users, FileText, Bell, LogOut, User, Menu } from 'lucide-react';
+import { Truck, LayoutDashboard, UserCheck, Upload, Package, BoxIcon, Warehouse, Users, Bell, LogOut, User, Menu } from 'lucide-react';
 import s from './admin.module.css';
 
 const NAV = [
@@ -23,10 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Auto-close sidebar on mobile when navigating
-  useEffect(() => {
-    setIsSidebarOpen(false);
-  }, [pathname]);
+
 
   return (
     <div className={s.adminLayout}>
@@ -47,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const Icon = item.icon;
             const active = pathname === item.href || (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
             return (
-              <Link key={item.href + i} href={item.href} className={`${s.navLink} ${active ? s.active : ''}`}>
+              <Link key={item.href + i} href={item.href} className={`${s.navLink} ${active ? s.active : ''}`} onClick={() => setIsSidebarOpen(false)}>
                 <Icon size={18} className={s.navIcon} />
                 <span>{item.label}</span>
               </Link>

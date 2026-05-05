@@ -2,7 +2,7 @@
 import { useState, useMemo } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { coldRooms, roomTransfers, items, warehouseStaff, formatDateTime } from '@/data/mock';
-import { CheckCircle, Clock, Box, Thermometer, User, Map, ArrowLeftRight, ArrowRight, X, Eye, Calendar, Filter } from 'lucide-react';
+import { CheckCircle, Clock, Box, Thermometer, User, Map, ArrowLeftRight, ArrowRight, X, Eye, Calendar } from 'lucide-react';
 import s from '../warehouse.module.css';
 
 export default function WarehouseMonitoring() {
